@@ -8,9 +8,9 @@
   --border: #232b45;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 
-  --creational: #7aa2ff;
-  --structural: #34d3a8;
-  --behavioral: #c084fc;
+  --teachers: #7aa2ff;
+  --students: #34d3a8;
+  --staff: #c084fc;
 }
 
 body {
@@ -41,7 +41,7 @@ header {
 header h1 {
   margin: 0;
   font-size: 30px;
-  background: linear-gradient(90deg, var(--creational), var(--behavioral));
+  background: linear-gradient(90deg, var(--teachers), var(--staff));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -63,7 +63,7 @@ header .tagline {
   color: var(--muted);
 }
 
-.pattern-category {
+.profile-role {
   margin-top: 44px;
 }
 
@@ -94,9 +94,8 @@ header .tagline {
   color: var(--muted);
 }
 
-.creational { --accent: var(--creational); }
-.structural { --accent: var(--structural); }
-.behavioral { --accent: var(--behavioral); }
+.teachers { --accent: var(--teachers); }
+.students { --accent: var(--students); }
 
 .cards-grid {
   display: grid;

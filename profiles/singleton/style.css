@@ -87,6 +87,18 @@ header {
   max-width: 70ch;
 }
 
+.profile-heading {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.avatar {
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
 .badge {
   display: inline-flex;
   align-items: center;

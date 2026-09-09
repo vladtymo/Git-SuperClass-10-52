@@ -1,24 +1,23 @@
-# Git-Design-Patterns
+# Git-SuperClass
 
-A static site guide to software design patterns, with UML diagrams and code examples for each pattern.
+A static site directory of user profiles for SuperClass, organized by role.
 
 ## Overview
 
-Patterns are organized into three categories:
+Profiles are organized into roles:
 
-- **Creational** — object creation mechanisms (e.g., Singleton)
-- **Structural** — how classes and objects are composed
-- **Behavioral** — communication and responsibility between objects
+- **Teachers** — profile pages for teaching staff
+- **Students** — profile pages for students (coming soon)
 
 ## Project Structure
 
 ```
-index.html          Landing page with pattern categories
+index.html          Landing page listing profiles by role
 style.css            Shared styles for the landing page
-patterns/
+profiles/
   singleton/
-    page.html        Singleton pattern guide
-    style.css         Styles for the pattern page
+    teacher.html     A teacher profile page
+    style.css         Styles for the profile page
 ```
 
 ## Getting Started
@@ -31,11 +30,11 @@ npx serve .
 
 Then navigate to the local URL shown in the terminal.
 
-## Adding a New Pattern
+## Adding a New Profile
 
-1. Create a new folder under `patterns/` (e.g., `patterns/factory-method/`).
-2. Add a `page.html` and `style.css` following the structure of `patterns/singleton/`.
-3. Link the new page from the appropriate category section in [index.html](index.html).
+1. Create a new folder under `profiles/` (e.g., `profiles/jane-doe/`).
+2. Add a profile page and `style.css` following the structure of `profiles/singleton/`.
+3. Link the new page from the appropriate role section in [index.html](index.html).
 
 ## License
 
