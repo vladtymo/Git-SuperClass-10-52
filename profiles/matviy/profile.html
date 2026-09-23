@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Matviy — Student Profile | SuperClass</title>
+    <meta name="description" content="Student profile for Matviy at SuperClass." />
+    <link rel="stylesheet" href="../bob/style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="profile-heading">
+                <img class="avatar" src="https://api.dicebear.com/9.x/initials/svg?seed=Matviy"
+                    alt="Matviy's avatar" width="96" height="96" />
+                <div>
+                    <span class="badge" aria-label="Profile role">Profile • Student</span>
+                    <h1 class="title">Matviy</h1>
+                    <p class="subtitle">15-year-old student at SuperClass who enjoys staying active and spending free time at the gym.</p>
+                </div>
+            </div>
+            <div class="toolbar">
+                <button class="btn">
+                    <a class="clear-styles" href="../../index.html">Back Home</a>
+                </button>
+                <button id="copyLink" class="btn" aria-label="Copy shareable link">Copy Link</button>
+                <button id="toggleContrast" class="btn ghost" aria-label="Toggle high contrast">Toggle Contrast</button>
+            </div>
+        </header>
+
+        <section class="grid">
+            <article class="card span-8">
+                <h2>About Me</h2>
+                <p>Hi, I'm Matviy. I am 15 years old and my hobby is going to the gym. I spend my free time training,
+                    staying active, and working toward my fitness goals.</p>
+                <div class="callout" role="note">
+                    <strong>Favorite hobby:</strong> Going to the gym and staying active.
+                </div>
+            </article>
+
+            <aside class="card span-4">
+                <h2>Quick Facts</h2>
+                <ul>
+                    <li>Name: <span class="kbd">Matviy</span></li>
+                    <li>Age: <span class="kbd">15 years</span></li>
+                    <li>Role: <span class="kbd">Student</span></li>
+                    <li>Hobby: <span class="kbd">Going to the gym</span></li>
+                </ul>
+            </aside>
+
+            <article class="card span-12">
+                <h2>About Matviy</h2>
+                <div class="tabs" id="profileTabs">
+                    <div class="tablist" role="tablist" aria-label="Profile sections">
+                        <button class="tab" role="tab" aria-controls="tab-interests" data-tab="interests">Interests</button>
+                        <button class="tab" role="tab" aria-controls="tab-goals" data-tab="goals">Goals</button>
+                        <button class="tab" role="tab" aria-controls="tab-contact" data-tab="contact">Contact</button>
+                    </div>
+
+                    <section class="tabpanel" id="tab-interests" role="tabpanel" aria-labelledby="interests">
+                        <h3>Interests</h3>
+                        <div class="pill-list" aria-label="Interests">
+                            <span class="pill">Going to the gym</span>
+                            <span class="pill">Fitness</span>
+                            <span class="pill">Active lifestyle</span>
+                        </div>
+                    </section>
+
+                    <section class="tabpanel" id="tab-goals" role="tabpanel" aria-labelledby="goals">
+                        <h3>Goals</h3>
+                        <ul>
+                            <li>Stay healthy and active</li>
+                            <li>Become stronger through regular training</li>
+                            <li>Keep learning and growing</li>
+                        </ul>
+                    </section>
+
+                    <section class="tabpanel" id="tab-contact" role="tabpanel" aria-labelledby="contact">
+                        <h3>Contact</h3>
+                        <p>Matviy is a student at SuperClass.</p>
+                    </section>
+                </div>
+            </article>
+
+            <article class="card span-6">
+                <h2>Favorite Activity</h2>
+                <p>I enjoy going to the gym, training regularly, and working toward my personal fitness goals.</p>
+            </article>
+
+            <article class="card span-6">
+                <h2>Student Status</h2>
+                <div class="pill-list" aria-label="Student status">
+                    <span class="pill">15 years old</span>
+                    <span class="pill">SuperClass student</span>
+                </div>
+            </article>
+        </section>
+
+        <footer>
+            <p>© 2026 SuperClass. Student Profile — Matviy.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('copyLink').addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(location.href);
+                const button = document.getElementById('copyLink');
+                const oldText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => button.textContent = oldText, 1200);
+            } catch { }
+        });
+
+        const toggleButton = document.getElementById('toggleContrast');
+        let highContrast = false;
+        toggleButton.addEventListener('click', () => {
+            highContrast = !highContrast;
+            document.documentElement.style.setProperty('--bg', highContrast ? '#05070f' : '');
+            document.documentElement.style.setProperty('--card', highContrast ? '#0a0f22' : '');
+            document.documentElement.style.setProperty('--card-2', highContrast ? '#0b1020' : '');
+            document.documentElement.style.setProperty('--text', highContrast ? '#f2f6ff' : '');
+            document.documentElement.style.setProperty('--border', highContrast ? '#243463' : '');
+        });
+
+        const tabsRoot = document.getElementById('profileTabs');
+        const tabs = Array.from(tabsRoot.querySelectorAll('.tab'));
+        const panels = Array.from(tabsRoot.querySelectorAll('.tabpanel'));
+        function activate(tabId) {
+            tabs.forEach(tab => tab.dataset.active = (tab.dataset.tab === tabId));
+            panels.forEach(panel => panel.classList.toggle('active', panel.id === 'tab-' + tabId));
+        }
+        tabs.forEach(tab => tab.addEventListener('click', () => activate(tab.dataset.tab)));
+        activate('interests');
+    </script>
+</body>
+
+</html>
