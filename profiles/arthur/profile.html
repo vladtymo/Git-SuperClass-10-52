@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Arthur — Student Profile | SuperClass</title>
+    <meta name="description" content="Student profile for Arthur at SuperClass." />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <div class="profile-heading">
+                <img class="avatar" src="https://api.dicebear.com/9.x/initials/svg?seed=Arthur"
+                    alt="Arthur's avatar" width="96" height="96" />
+                <div>
+                    <span class="badge" aria-label="Profile role">Profile • Student</span>
+                    <h1 class="title">Arthur</h1>
+                    <p class="subtitle">A 15-year-old student from Rivne who enjoys sports, computer games, and spending time outdoors.</p>
+                </div>
+            </div>
+            <div class="toolbar">
+                <button class="btn"><a class="clear-styles" href="../../index.html">Back Home</a></button>
+                <button id="copyLink" class="btn" aria-label="Copy shareable link">Copy Link</button>
+                <button id="toggleContrast" class="btn ghost" aria-label="Toggle high contrast">Toggle Contrast</button>
+            </div>
+        </header>
+
+        <section class="grid">
+            <article class="card span-8">
+                <h2>About Me</h2>
+                <p>My name is Arthur and I am 15 years old. I live in Rivne, Ukraine. I like going to the gym, playing computer games, and spending time outside.</p>
+                <div class="callout" role="note">
+                    <strong>My favorite hobby:</strong> Going to the gym and staying active.
+                </div>
+            </article>
+
+            <aside class="card span-4">
+                <h2>Quick Facts</h2>
+                <ul>
+                    <li>Age: <span class="kbd">15</span></li>
+                    <li>City: <span class="kbd">Rivne</span></li>
+                    <li>Role: <span class="kbd">Student</span></li>
+                    <li>School: <span class="kbd">SuperClass</span></li>
+                </ul>
+            </aside>
+
+            <article class="card span-12">
+                <h2>Interests</h2>
+                <div class="pill-list" aria-label="Interests">
+                    <span class="pill">Going to the gym</span>
+                    <span class="pill">Computer games</span>
+                    <span class="pill">Spending time outdoors</span>
+                </div>
+            </article>
+        </section>
+
+        <footer>
+            <p>© 2026 SuperClass. Student Profile — Arthur.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('copyLink').addEventListener('click', async () => {
+            try {
+                await navigator.clipboard.writeText(location.href);
+                const button = document.getElementById('copyLink');
+                const oldText = button.textContent;
+                button.textContent = 'Copied!';
+                setTimeout(() => button.textContent = oldText, 1200);
+            } catch { }
+        });
+
+        const toggleButton = document.getElementById('toggleContrast');
+        let highContrast = false;
+        toggleButton.addEventListener('click', () => {
+            highContrast = !highContrast;
+            document.documentElement.style.setProperty('--bg', highContrast ? '#05070f' : '');
+            document.documentElement.style.setProperty('--card', highContrast ? '#0a0f22' : '');
+            document.documentElement.style.setProperty('--card-2', highContrast ? '#0b1020' : '');
+            document.documentElement.style.setProperty('--text', highContrast ? '#f2f6ff' : '');
+            document.documentElement.style.setProperty('--border', highContrast ? '#243463' : '');
+        });
+    </script>
+</body>
+
+</html>
