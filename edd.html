@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ШІ Асистент IT STEP School</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #334155);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 460px;
+            height: 700px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+        .chat-header {
+            background-color: #2563eb;
+            color: white;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .header-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+        select.persona-select {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            outline: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        select.persona-select option {
+            background: #1e293b;
+            color: white;
+        }
+        .policy-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        .policy-btn:hover, select.persona-select:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+        .chat-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background-color: #f8fafc;
+        }
+        .message {
+            padding: 12px 16px;
+            border-radius: 10px;
+            max-width: 80%;
+            word-wrap: break-word;
+            line-height: 1.4;
+            font-size: 14px;
+            white-space: pre-wrap;
+        }
+        .user-message {
+            background-color: #2563eb;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .ai-message {
+            background-color: #e2e8f0;
+            color: #1e293b;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .input-area {
+            display: flex;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #e2e8f0;
+        }
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            outline: none;
+            font-size: 14px;
+        }
+        input:focus {
+            border-color: #2563eb;
+        }
+        .send-btn {
+            padding: 12px 20px;
+            background-color: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+        .send-btn:hover {
+            background-color: #1d4ed8;
+        }
+        .modal {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            width: 88%;
+            max-height: 82%;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content h3 { margin-top: 0; color: #1e293b; font-size: 18px; }
+        .modal-content h4 { margin: 12px 0 4px 0; color: #2563eb; font-size: 14px; }
+        .modal-content p, .modal-content ul { font-size: 13px; color: #475569; line-height: 1.5; margin: 4px 0; }
+        .modal-content ul { padding-left: 20px; }
+        .close-btn {
+            margin-top: 15px;
+            padding: 10px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            align-self: flex-end;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <div class="header-top">
+                <span id="chatTitle">📋 Реєстрація у чаті</span>
+                <button class="policy-btn" onclick="toggleModal(true)">🔒 Правила</button>
+            </div>
+            <div class="header-controls">
+                <select id="personaSelect" class="persona-select">
+                    <option value="friendly">😊 Дружній асистент</option>
+                    <option value="aggressive">😡 Суворий інструктор</option>
+                    <option value="active">🥳 Гіперактивний тусовщик</option>
+                    <option value="formal">🤖 Роботоподібний протокол</option>
+                    <option value="agent">🕵️ Секретний агент</option>
+                    <option value="gamer">👑 Pro Gamer / Наставник</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="chat-box" id="chatBox"></div>
+
+        <div class="input-area">
+            <input type="text" id="userInput" placeholder="Введіть відповідь..." onkeypress="handleKeyPress(event)">
+            <button class="send-btn" onclick="sendMessage()">Надіслати</button>
+        </div>
+
+        <div class="modal" id="policyModal">
+            <div class="modal-content">
+                <h3>Політика конфіденційності та правила</h3>
+                <h4>🛡️ Зберігання інформації:</h4>
+                <ul>
+                    <li>Дані авторизації використовуються для персоналізації відповідей ШІ.</li>
+                    <li>Інформація зберігається в межах IT STEP School (м. Рівне).</li>
+                </ul>
+                <h4>💬 Як спілкуватися з ботом:</h4>
+                <ul>
+                    <li>Ставте конкретні запитання про навчання та IT.</li>
+                    <li>Дотримуйтеся ввічливості.</li>
+                </ul>
+                <button class="close-btn" onclick="toggleModal(false)">Зрозуміло</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Keep the real API key out of the repository.
+        // Add it locally in your environment before running the app.
+        const API_KEY = "YOUR_GEMINI_API_KEY";
+
+        const authQuestions = [
+            { key: "role", text: "1. Ви учень чи учитель? (Учень / Учитель)" },
+            { key: "lastName", text: "2. Вкажіть ваше прізвище:" },
+            { key: "firstName", text: "3. Вкажіть ваше ім'я:" },
+            { key: "gender", text: "4. Вкажіть вашу стать: (Чоловіча / Жіноча)" },
+            { key: "age", text: "5. Скільки вам років?" },
+            { key: "grade", text: "6. У якому класі ви навчаєтесь/викладаєте? (5–11)" },
+            { key: "studyFormat", text: "7. Формат навчання: Очно, Онлайн чи Мала Академія?" },
+            { key: "phone", text: "8. Напишіть ваш контактний номер телефону:" },
+            { key: "itInterest", text: "9. Який напрям IT цікавить найбільше? (Програмування / 3D / Дизайн / Робототехніка)" },
+            { key: "subjects", text: "10. Які ваші улюблені предмети?" },
+            { key: "goal", text: "11. Ваша головна мета? (Допомога з навчання / Підготовка до іспитів / IT-проекти)" },
+            { key: "preferredTime", text: "12. Коли вам зручно отримувати нагадування? (Ранок / День / Вечір)" }
+        ];
+
+        let currentQuestionIndex = 0;
+        let isAuthorized = false;
+        
+        const userData = {
+            school: "IT STEP School",
+            city: "Рівне"
+        };
+
+        window.onload = () => {
+            appendMessage("Вітаємо в IT STEP School (Рівне)! Пройдіть реєстрацію з 12 питань.", 'ai');
+            askNextAuthQuestion();
+        };
+
+        function toggleModal(show) {
+            document.getElementById('policyModal').style.display = show ? 'flex' : 'none';
+        }
+
+        function getSystemPrompt() {
+            const persona = document.getElementById('personaSelect').value;
+            const baseInfo = `Користувач: ${userData.firstName} ${userData.lastName} (${userData.role}, ${userData.grade} клас, напрям: ${userData.itInterest}). Локація: IT STEP School Рівне.`;
+
+            switch (persona) {
+                case 'aggressive':
+                    return `${baseInfo} Твоє ставлення суворе, буркотливе та роздратоване. Вважаєш запитання банальними, відповідай коротко, різко, але по суті IT-справи.`;
+                case 'active':
+                    return `${baseInfo} Твоє ставлення вибухово-позитивне, гіперактивне! Використовуй емодзі (🚀, 🔥, ⚡), підбадьорюй та спілкуйся як найкращий друг на вайбі.`;
+                case 'formal':
+                    return `${baseInfo} Твоє ставлення абсолютно нейтральне, беземоційне та протокольне. Відповідай виключно чіткими пунктами та строгою IT-термінологією.`;
+                case 'agent':
+                    return `${baseInfo} Ти куратор секретної IT-лабораторії. Звертайся як до Агента ${userData.firstName}. Подавай відповіді як надтаємні інструкції та спецоперації.`;
+                case 'gamer':
+                    return `${baseInfo} Ти топовий кіберспортсмен. Спілкуйся з легкою зверхністю геймера, використовуй сленг (прокачка, нуб, квест, баг, фіча), допомагай "апати скіл".`;
+                default:
+                    return `${baseInfo} Твоє ставлення дружнє, приязне, підтримуюче та ввічливе. Допомагай з будь-яких питань.`;
+            }
+        }
+
+        function askNextAuthQuestion() {
+            if (currentQuestionIndex < authQuestions.length) {
+                const q = authQuestions[currentQuestionIndex];
+                appendMessage(q.text, 'ai');
+            } else {
+                isAuthorized = true;
+                document.getElementById('chatTitle').textContent = "🤖 ШІ Асистент IT STEP";
+                document.getElementById('userInput').placeholder = "Запитайте про що завгодно...";
+                appendMessage(`Реєстрацію успішно завершено, ${userData.firstName}! Чим можу допомогти?`, 'ai');
+            }
+        }
+
+        function appendMessage(text, sender) {
+            const chatBox = document.getElementById('chatBox');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
+            messageDiv.textContent = text;
+            chatBox.appendChild(messageDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            return messageDiv;
+        }
+
+        async function sendMessage() {
+            const inputField = document.getElementById('userInput');
+            const userText = inputField.value.trim();
+            if (!userText) return;
+
+            appendMessage(userText, 'user');
+            inputField.value = '';
+
+            if (!isAuthorized) {
+                const currentQ = authQuestions[currentQuestionIndex];
+                userData[currentQ.key] = userText;
+                currentQuestionIndex++;
+                askNextAuthQuestion();
+                return;
+            }
+
+            const aiMessageDiv = appendMessage("…", 'ai');
+            try {
+                await fetchStreamingAnswer(userText, aiMessageDiv);
+            } catch (error) {
+                aiMessageDiv.textContent = `Помилка: ${error.message}`;
+            }
+        }
+
+        async function fetchStreamingAnswer(query, targetMessageDiv) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse`;
+            
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-goog-api-key": API_KEY
+                },
+                body: JSON.stringify({
+                    systemInstruction: {
+                        parts: [{ text: getSystemPrompt() }]
+                    },
+                    contents: [{
+                        parts: [{ text: query }]
+                    }],
+                    generationConfig: {
+                        maxOutputTokens: 1000
+                    }
+                })
+            });
+
+            if (!response.ok) {
+                const errData = await response.json().catch(() => ({}));
+                throw new Error(errData.error?.message || `Помилка (${response.status})`);
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+            let fullText = "";
+            targetMessageDiv.textContent = "";
+
+            while (true) {
+                const { done, value } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                const lines = chunk.split("\n");
+
+                for (const line of lines) {
+                    if (line.startsWith("data: ")) {
+                        try {
+                            const jsonData = JSON.parse(line.replace("data: ", ""));
+                            const textPart = jsonData.candidates?.[0]?.content?.parts?.[0]?.text;
+                            if (textPart) {
+                                fullText += textPart;
+                                targetMessageDiv.textContent = fullText;
+                                const chatBox = document.getElementById('chatBox');
+                                chatBox.scrollTop = chatBox.scrollHeight;
+                            }
+                        } catch (e) {}
+                    }
+                }
+            }
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+    </script>
+
+</body>
+</html>
